@@ -4,7 +4,7 @@ import { EventEmitter } from "events";
 import crypto = require("crypto");
 
 export class WebSocketQueue extends EventEmitter {
-  private secure = false;
+  private pSecure = false;
 
   /**
    * @param ws A WebSocket already connected to a client.
@@ -26,9 +26,13 @@ export class WebSocketQueue extends EventEmitter {
       if (recvPacket.t === "h" && recvPacket.a) {
         // Correct key
         if (recvPacket.a === derivedKey) {
-          this.secure = true;
+          this.pSecure = true;
+          // After having a secure connection, destroy psk to avoid improbable security issues:
+          delete this.psk;
           this.emit("open");
         } else {
+          // If we are going to close the connection, destroy psk to avoid improbable security issues:
+          delete this.psk;
           ws.close();
           this.emit("close");
         }
@@ -37,7 +41,7 @@ export class WebSocketQueue extends EventEmitter {
         ws.send({t: "h", a: sendKey});
       } else {
         // Only if secured
-        if (this.secure) {
+        if (this.pSecure) {
           if (recvPacket.t === "m") {
             this.emit("message", {
               message: recvPacket.d,
@@ -56,11 +60,15 @@ export class WebSocketQueue extends EventEmitter {
     });
   }
 
+  public get secure() {
+    return this.pSecure;
+  }
+
   public send(data: Packet) {
-    if (this.secure) {
+    if (this.pSecure) {
       this.ws.send(data);
     } else {
-      throw new Error("Trying to send data before opened connection.");
+      throw new Error("Trying to send data before the connection finished hello protocol.");
     }
   }
 }
