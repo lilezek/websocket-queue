@@ -1,7 +1,7 @@
 {
   "name": "queue-protocol",
-  "version": "1.0.0",
-  "description": "Queue protocol for GiG test",
+  "version": "0.0.1",
+  "description": "Queue protocol for WebSockets",
   "module": "lib/index",
   "types": "lib/index.d.ts",
   "main": "bin/index.js",
