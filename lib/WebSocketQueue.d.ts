@@ -6,11 +6,12 @@ import { EventEmitter } from "events";
 export declare class WebSocketQueue extends EventEmitter {
     private ws;
     private psk;
-    private secure;
+    private pSecure;
     /**
      * @param ws A WebSocket already connected to a client.
      */
     constructor(ws: WebSocket, psk: string);
+    readonly secure: boolean;
     send(data: Packet): void;
 }
 export interface WebSocketQueue {
