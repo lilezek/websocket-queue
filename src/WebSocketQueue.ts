@@ -18,12 +18,14 @@ export class WebSocketQueue extends EventEmitter {
     };
     
     const derivedKey = crypto.createHash("sha256").update(psk + once.toString(16)).digest("base64");
+    console.log("My key:", derivedKey);
     ws.send(sendPacket);
 
     ws.on("message", (d) => {
       const recvPacket = JSON.parse(d.toString()) as Packet;
       // Hello packet
       if (recvPacket.t === "h" && recvPacket.a) {
+        console.log("Answer: ", recvPacket.a);
         // Correct key
         if (recvPacket.a === derivedKey) {
           this.pSecure = true;
@@ -37,7 +39,7 @@ export class WebSocketQueue extends EventEmitter {
           this.emit("error");
         }
       } else if (recvPacket.t === "h" && recvPacket.o) {
-        const sendKey = crypto.createHash("sha256").update(psk + recvPacket.o).digest("base64");
+        const sendKey = crypto.createHash("sha256").update(psk + recvPacket.o.toString(16)).digest("base64");
         ws.send({t: "h", a: sendKey});
       } else {
         // Only if secured
