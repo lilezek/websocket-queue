@@ -34,7 +34,7 @@ export class WebSocketQueue extends EventEmitter {
           // If we are going to close the connection, destroy psk to avoid improbable security issues:
           delete this.psk;
           ws.close();
-          this.emit("close");
+          this.emit("error");
         }
       } else if (recvPacket.t === "h" && recvPacket.o) {
         const sendKey = crypto.createHash("sha256").update(psk + recvPacket.o).digest("base64");
@@ -78,4 +78,7 @@ export interface WebSocketQueue {
    * @event Message event.
    */
   on(ev: "message", cb: (data: {message: string, topic: string}) => any): any;
+  on(ev: "open", cb: () => any): any;
+  on(ev: "close", cb: () => any): any;
+  on(ev: "error", cb: () => any): any;
 }

@@ -22,4 +22,7 @@ export interface WebSocketQueue {
         message: string;
         topic: string;
     }) => any): any;
+    on(ev: "open", cb: () => any): any;
+    on(ev: "close", cb: () => any): any;
+    on(ev: "error", cb: () => any): any;
 }
