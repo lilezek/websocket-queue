@@ -19,7 +19,7 @@ export class WebSocketQueue extends EventEmitter {
     
     const derivedKey = crypto.createHash("sha256").update(psk + once.toString(16)).digest("base64");
     console.log("My key:", derivedKey);
-    ws.send(sendPacket);
+    ws.send(JSON.stringify(sendPacket));
 
     ws.on("message", (d) => {
       const recvPacket = JSON.parse(d.toString()) as Packet;
@@ -40,7 +40,7 @@ export class WebSocketQueue extends EventEmitter {
         }
       } else if (recvPacket.t === "h" && recvPacket.o) {
         const sendKey = crypto.createHash("sha256").update(psk + recvPacket.o.toString(16)).digest("base64");
-        ws.send({t: "h", a: sendKey});
+        ws.send(JSON.stringify({t: "h", a: sendKey}));
       } else {
         // Only if secured
         if (this.pSecure) {
@@ -68,7 +68,7 @@ export class WebSocketQueue extends EventEmitter {
 
   public send(data: Packet) {
     if (this.pSecure) {
-      this.ws.send(data);
+      this.ws.send(JSON.stringify(data));
     } else {
       throw new Error("Trying to send data before the connection finished hello protocol.");
     }
