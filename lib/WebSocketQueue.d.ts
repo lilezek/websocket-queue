@@ -13,6 +13,7 @@ export declare class WebSocketQueue extends EventEmitter {
     constructor(ws: WebSocket, psk: string);
     readonly secure: boolean;
     send(data: Packet): void;
+    close(): void;
 }
 export interface WebSocketQueue {
     /**

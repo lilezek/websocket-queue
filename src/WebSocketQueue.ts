@@ -71,6 +71,10 @@ export class WebSocketQueue extends EventEmitter {
       throw new Error("Trying to send data before the connection finished hello protocol.");
     }
   }
+
+  public close() {
+    this.ws.close();
+  }
 }
 
 export interface WebSocketQueue {
