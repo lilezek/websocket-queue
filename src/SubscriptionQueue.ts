@@ -3,7 +3,7 @@ import { IMessage } from "./messages";
 import { WebSocketQueue } from "./WebSocketQueue";
 
 export class SubscriptionQueue extends WebSocketQueue {
-  private subscriptions: { [key: string]: Array<(data: string) => any> };
+  private subscriptions: { [key: string]: Array<(data: string) => any> } = {};
 
   constructor(ws: WebSocket, psk: string) {
     super(ws, psk);
