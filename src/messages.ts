@@ -55,7 +55,7 @@ export interface ISubscribe extends IPacket {
  * Unsubscription packet.
  */
 export interface IUnsubscribe extends IPacket {
-  t: "s";
+  t: "u";
 
   /**
    * Topic to unsubscribe.
