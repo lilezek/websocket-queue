@@ -60,6 +60,10 @@ export class WebSocketQueue extends EventEmitter {
     });
   }
 
+  public get opened() {
+    return this.ws.readyState === OPEN;
+  }
+
   public get secure() {
     return this.pSecure;
   }
