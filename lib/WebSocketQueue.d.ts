@@ -11,6 +11,7 @@ export declare class WebSocketQueue extends EventEmitter {
      * @param ws A WebSocket already connected to a client.
      */
     constructor(ws: WebSocket, psk: string);
+    readonly opened: boolean;
     readonly secure: boolean;
     send(data: Packet): void;
     close(): void;

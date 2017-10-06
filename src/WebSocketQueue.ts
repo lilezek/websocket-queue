@@ -61,7 +61,7 @@ export class WebSocketQueue extends EventEmitter {
   }
 
   public get opened() {
-    return this.ws.readyState === OPEN;
+    return this.ws.readyState === this.ws.OPEN;
   }
 
   public get secure() {
